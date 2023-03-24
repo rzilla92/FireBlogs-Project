@@ -127,8 +127,8 @@ export default {
       position: absolute;
       background-color: #fff;
       transform: rotateZ(3deg);
-      width: 60px;
-      right: -30px;
+      width: 100px;
+      right: -56px;
       height: 101%;
       @media (min-width: 900px) {
         display: initial;
