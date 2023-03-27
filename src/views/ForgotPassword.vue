@@ -1,7 +1,7 @@
 <template>
   <div class="reset-password">
     <Modal v-if="modalActive" :modalMessage="modalMessage" v-on:close-modal="closeModal" />
-    <Loading v-if="loading" />
+    <Loading  v-if="loading"/>
     <div class="form-wrap">
       <form class="reset">
         <p class="login-register">
@@ -38,8 +38,9 @@
       data(){
         return {
             email:null,
-            modalActive: null,
-            modalMessage: ""
+            modalActive: false,
+            modalMessage: "",
+            loading: null,
         }
       },
       methods: {
