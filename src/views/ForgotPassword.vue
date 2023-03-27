@@ -16,7 +16,7 @@
             <email class="icon" />
           </div>
         </div>
-        <button>Reset</button>
+        <button @click.prevent="resetPassword">Reset</button>
         <div class="angle"></div>
       </form>
       <div class="background"></div>
@@ -28,6 +28,9 @@
   import Email from "../assets/Icons/envelope-regular.svg";
   import Modal from "../components/Modal.vue";
   import Loading from "../components/Loading.vue";
+  import firebase from "firebase/app";
+  import "firebase/auth";
+
   export default {
       name: "ForgotPassword",
       components: {
@@ -37,13 +40,25 @@
       },
       data(){
         return {
-            email:null,
+            email:"",
             modalActive: false,
             modalMessage: "",
             loading: null,
         }
       },
       methods: {
+        resetPassword() {
+          this.loading = true;
+          firebase.auth().sendPasswordResetEmail(this.email).then(() => {
+            this.modalMessage = "if your account exist, you will receive an email for password reset"
+            this.loading = false
+            this.modalActive=true
+          }).catch(err => {
+            this.modalMessage = err.message
+            this.loading = false
+            this.modalActive = true
+          })
+        },
         closeModal() {
             this.modalActive = !this.modalActive
             this.email = ""

@@ -35,8 +35,8 @@ export default {
     components: {Email, Password},
     data() {
         return {
-            email: null,
-            password: null,
+            email: "",
+            password: "",
             error: null,
             errorMsg: ""
         }
