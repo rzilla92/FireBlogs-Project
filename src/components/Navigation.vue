@@ -10,7 +10,7 @@
             <ul v-show="!mobile">
                 <router-link class="link" :to="{ name: 'Home'}">Home</router-link>
                 <router-link class="link" :to="{name: 'Blogs'}">Blogs</router-link>
-                <router-link class="link" to="#">create Post</router-link>
+                <router-link v-if="admin" class="link" to="#">Create Post</router-link>
                 <router-link v-if="!user" class="link" :to="{name: 'Login'}">Login/Register</router-link>
             </ul>
             <div v-if="user" :class="{ 'mobile-user-menu': mobile }" @click="toggleProfileMenu" class="profile" ref="profile">
@@ -31,8 +31,8 @@
                                 <p>Profile</p>
                             </router-link>
                         </div>
-                        <div class="option">
-                            <router-link class="option" t:to="{name: 'Admin'}">
+                        <div v-if="admin" class="option">
+                            <router-link class="option" :to="{name: 'Admin'}">
                                 <adminIcon class="icon" />
                                 <p>Administrator</p>
                             </router-link>
@@ -53,7 +53,7 @@
         <ul class="mobile-nav" v-show="mobileNav">
             <router-link class="link" :to="{ name: 'Home'}">Home</router-link>
             <router-link class="link" :to="{name: 'Blogs'}">Blogs</router-link>
-            <router-link class="link" to="#">create Post</router-link>
+            <router-link v-if="admin" class="link" to="#">Create Post</router-link>
             <router-link v-if="!user" class="link" :to="{name: 'Login'}">Login/Register</router-link>
         </ul>
     </transition>
