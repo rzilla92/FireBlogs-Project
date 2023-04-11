@@ -14,6 +14,8 @@ export default new Vuex.Store({
       {blogTitle: "Blog Card #3", blogCoverPhoto: "stock-3", blogDate: "May 1,2023"},
       {blogTitle: "Blog Card #4", blogCoverPhoto: "stock-4", blogDate: "May 1,2023"},
     ],
+    blogPosts: [],
+    postLoaded: null,
     blogHTML: "Write your blog title here...",
     blogTitle: "",
     blogPhotoName: "",
@@ -28,6 +30,14 @@ export default new Vuex.Store({
     profileUsername: null,
     profileId: null,
     profileInitials: null,
+  },
+  getters: {
+    blogPostsFeed(state) {
+      return state.blogPosts.slice(0, 2);
+    },
+    blogPostsCards(state) {
+      return state.blogPosts.slice(2, 6);
+    },
   },
   mutations: {
     newBlogPost(state,payload) {
@@ -94,6 +104,26 @@ export default new Vuex.Store({
         username: state.profileUsername,
       });
       commit("setProfileInitials");
+    },
+    async getPost({ state }) {
+      const dataBase = await db.collection("blogPosts").orderBy("date", "desc");
+      const dbResults = await dataBase.get();
+      dbResults.forEach((doc) => {
+        if (!state.blogPosts.some((post) => post.blogID === doc.id)) {
+          const data = {
+            blogID: doc.data().blogID,
+            blogHTML: doc.data().blogHTML,
+            blogCoverPhoto: doc.data().blogCoverPhoto,
+            blogTitle: doc.data().blogTitle,
+            blogDate: doc.data().date,
+            blogCoverPhotoName: doc.data().blogCoverPhotoName,
+          };
+          state.blogPosts.push(data);
+          
+        }
+      });
+      state.postLoaded = true;
+      console.log(state.blogPosts)
     },
   },
   modules: {
