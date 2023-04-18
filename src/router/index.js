@@ -11,6 +11,8 @@ import CreatePost from "../views/CreatePost.vue"
 import BlogPreview from "../views/BlogPreview.vue"
 import ViewBlog from "../views/ViewBlog.vue"
 import EditBlog from "../views/EditBlog.vue"
+import firebase from "firebase/app";
+import "firebase/auth"
 
 Vue.use(VueRouter);
 
@@ -115,5 +117,27 @@ router.beforeEach((to,from,next)=> {
   document.title = `${to.meta.title} | BlogPanas`
   next()
 }) 
+
+router.beforeEach(async (to, from, next) => {
+  let user = firebase.auth().currentUser;
+  let admin = null;
+  if (user) {
+    let token = await user.getIdTokenResult();
+    admin = token.claims.admin;
+  }
+  if (to.matched.some((res) => res.meta.requiresAuth)) {
+    if (user) {
+      if (to.matched.some((res) => res.meta.requiresAdmin)) {
+        if (admin) {
+          return next();
+        }
+        return next({ name: "Home" });
+      }
+      return next();
+    }
+    return next({ name: "Home" });
+  }
+  return next();
+});
 
 export default router;
